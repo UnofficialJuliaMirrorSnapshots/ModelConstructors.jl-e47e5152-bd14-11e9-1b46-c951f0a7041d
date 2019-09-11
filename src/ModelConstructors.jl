@@ -5,14 +5,14 @@ module ModelConstructors
     using DataFrames, Dates, Distributed, Distributions, Nullables, Printf, Random
     using SpecialFunctions
     using LinearAlgebra
-    import LinearAlgebra: rank
 
     import Base.isempty, Base.<, Base.min, Base.max
     import LinearAlgebra.rank
+    import Distributions.log2π
     export
         # distributions_ext.jl
         BetaAlt, GammaAlt, RootInverseGamma, DegenerateMvNormal, DegenerateDiagMvTDist,
-        MatrixNormal, <=,
+        MatrixNormal, <=, logpdf,
 
         # settings.jl
         Setting, get_setting,

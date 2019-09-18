@@ -138,7 +138,7 @@ function Distributions.logpdf(d::DegenerateMvNormal, x::Vector{T}) where T<:Abst
         λ_all, _ = eigen(d.σ)
         d.λ_vals = filter(x -> x>1e-6, λ_all)
     end
-    return -(length(d.μ) * log2π + log(prod(d.λ_vals))) / 2.0 - ((x .- d.μ)'*d.σ_inv*(x .- d.μ))
+    return -(length(d.μ) * log2π + sum(log.(d.λ_vals)) + ((x .- d.μ)'*d.σ_inv*(x .- d.μ))) / 2.0
 end
 
 """
@@ -159,7 +159,7 @@ length(d::DegenerateMvNormal)
 
 Returns the dimension of `d`.
 """
-Base.length(d::Union{DegenerateMvNormal,MvNormal}) = length(d.μ)
+Base.length(d::DegenerateMvNormal) = length(d.μ)
 
 """
 ```
@@ -168,7 +168,7 @@ Distributions.rand(d::DegenerateMvNormal; cc::T = 1.0) where T<:AbstractFloat
 
 Generate a draw from `d` with variance optionally scaled by `cc^2`.
 """
-function Distributions.rand(d::Union{DegenerateMvNormal,MvNormal}; cc::T = 1.0) where T<:AbstractFloat
+function Distributions.rand(d::DegenerateMvNormal; cc::T = 1.0) where T<:AbstractFloat
     return d.μ + cc*d.σ*randn(length(d))
 end
 
@@ -180,7 +180,7 @@ Distributions.rand(d::DegenerateMvNormal, n::Int)
 Generate `n` draws from `d`. This returns a matrix of size `(length(d), n)`,
 where each column is a sample.
 """
-function Distributions.rand(d::Union{DegenerateMvNormal,MvNormal}, n::Int)
+function Distributions.rand(d::DegenerateMvNormal, n::Int)
     return d.μ .+ d.σ*randn(length(d), n)
 end
 

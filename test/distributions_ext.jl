@@ -1,5 +1,4 @@
-using ModelConstructors
-using Test, Distributions, InteractiveUtils, LinearAlgebra, Random
+import Distributions.I
 
 Random.seed!(22)
 
